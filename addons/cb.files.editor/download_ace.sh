@@ -23,6 +23,15 @@ if [ -f "${DEST}/ace.js" ]; then
     exit 0
 fi
 
+if which wget; then
+	GET_CMD="wget -O -"
+elif which curl; then
+	GET_CMD="curl -s -L"
+else
+	echo "Requires wget or cURL to build"
+	exit 1
+fi
+
 # Download tar.gz and pipe to tar
 # decompressing it to $DEST
-wget -O - ${ACE_URL} | tar -xzv -C ${DEST} --strip-components=2 ace-builds-${ACE_VERSION}/${ACE_SUB}
+${GET_CMD} ${ACE_URL} | tar -xzv -C ${DEST} --strip-components=2 ace-builds-${ACE_VERSION}/${ACE_SUB}
